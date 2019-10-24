@@ -1,0 +1,6 @@
+
+
+# các file không được push
+/node_modules
+/build
+/package-lock.json

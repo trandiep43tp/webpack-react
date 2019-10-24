@@ -1,0 +1,73 @@
+cách cấu hình ban đầu cho react
+1. tạo cây thư mục
+        src
+            inde.js 
+        .babelrc
+        index.html 
+        webpack.config.js 
+2. cài các gói 
+    1  npm install react react-dom --save    
+    2  npm install babel-loader @babel/core @babel/preset-env --save-dev
+    3  npm install --save-dev style-loader css-loader
+    4  npm install webpack webpack-cli --save-dev
+    5  npm install @babel/preset-react --save-dev
+    6  npm install axios bootstrap jquery popper.js --save
+    7  npm install --save redux react-redux
+    8  npm install react-router-dom redux-thunk
+    
+3 cấu hình  
+    1 file .babelrc
+        { 
+            "presets": ["@babel/env", "@babel/preset-react"]
+        }
+    2 file webpack.config
+    3 package.json thêm 2 dòng trong start 
+        "dev": "webpack --mode development",
+        "build": "webpack --mode production"
+
+
+4 cải thiện performance cho trang web 
+    Do khi bundle thì nó kéo cả các file bootstrap, jquery ... vào. Mỗi lần chuyển trang nó cũng lại kéo -> tốc độ load trang
+    chậm. -> ta phải tách riêng các file này -> nó kéo về client 1 lần đầu và lưu vào Catch -> gọi đó là kỹ thuật VENDOR CATCHING
+    cấu hình trong webpack.config:
+        entry:{
+            vendor: VENDOR
+        }
+        output: {
+            filename: '[name].js'
+        }
+        sau đó thêm: 
+        optimization: {
+            splitChunks: {
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,                   
+                        name: 'vendor',
+                        chunks: 'all',
+                    }
+                }
+            }
+        }
+
+5 sử dụng HtmlWebpackPlugin
+    1. đưa file index.html vào trong thư mục src
+    2. npm install --save-dev html-webpack-plugin
+    3. bỏ script trong file index.html
+   xem: https://webpack.js.org/guides/output-management/#setting-up-htmlwebpackplugin
+
+6 cách xóa rỗng thư mục build mỗi lần build
+xem: https://webpack.js.org/guides/output-management/#cleaning-up-the-dist-folder
+7 cách lưu catch
+    xem mục manifest của webpack
+    https://webpack.js.org/guides/output-management/#the-manifest
+
+MỤC 5, 6,7 XEM TRONG output-management CỦA WEBPACK
+
+8 cách tạo 1 server cho project
+    vào webpack đánh tìm kiếm webpack-dev-server 
+9 Cách để tạo các file static 
+    1. thêm folder assets để chứa các file image, css, js từ bên thứ 3
+    2. sử dụng plugin CopyWebpackPlugin để copy thư mục này vào thư mục build
+        -> npm install copy-webpack-plugin --save-dev
+        -> vào webpack để xem thêm cấu hình
+
